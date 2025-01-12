@@ -30,7 +30,15 @@ namespace Blogger.Web.Controllers
             _bloggerDbContext.Tags.Add(tag);
             _bloggerDbContext.SaveChanges();
             _bloggerDbContext.Dispose();
-            return View("Add");
+            return RedirectToAction("List");
+        }
+
+        [HttpGet]
+        public IActionResult List()
+        {
+            var tags = _bloggerDbContext.Tags.ToList();
+
+            return View(tags);
         }
     }
 }
