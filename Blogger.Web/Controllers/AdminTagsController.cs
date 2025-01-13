@@ -22,14 +22,15 @@ namespace Blogger.Web.Controllers
         [HttpPost]
         public IActionResult Add(AddTagRequest request)
         {
-            var tag = new Tag { 
+            var tag = new Tag
+            {
                 Name = request.Name,
-                DisplayName = request.DisplayName 
+                DisplayName = request.DisplayName
             };
 
             _bloggerDbContext.Tags.Add(tag);
             _bloggerDbContext.SaveChanges();
-            _bloggerDbContext.Dispose();
+            
             return RedirectToAction("List");
         }
 
@@ -82,14 +83,28 @@ namespace Blogger.Web.Controllers
             var existingTag = _bloggerDbContext.Tags.Find(request.Id);
             if (existingTag == null)
             {
-                _bloggerDbContext.Dispose();
-                return RedirectToAction("Edit", new { Id = request.Id});
+                
+                return RedirectToAction("Edit", new { Id = request.Id });
             }
 
             existingTag.Name = tag.Name;
             existingTag.DisplayName = tag.DisplayName;
             _bloggerDbContext.SaveChanges();
-            _bloggerDbContext.Dispose();
+            
+            return RedirectToAction("List");
+        }
+
+        [HttpPost]
+        public IActionResult Delete(EditTagRequests request)
+        {
+            var tag = _bloggerDbContext.Tags.Find(request.Id);
+            if (tag == null)
+            {
+                return RedirectToAction("Edit", new { Id = request.Id });
+            }
+            _bloggerDbContext.Tags.Remove(tag);
+            _bloggerDbContext.SaveChanges();
+            
             return RedirectToAction("List");
         }
     }

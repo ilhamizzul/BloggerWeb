@@ -29,7 +29,6 @@
                         <td>@tag.DisplayName</td>
                         <td>
                             <a asp-area="" asp-controller="AdminTags" asp-action="Edit" asp-route-id="@tag.Id" class="btn btn-primary">Edit</a>
-                            <a href="@Url.Action("Delete", "AdminTags", new { id = tag.Id })" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 }
