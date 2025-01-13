@@ -40,5 +40,57 @@ namespace Blogger.Web.Controllers
 
             return View(tags);
         }
+
+        [HttpGet]
+        public IActionResult Edit(Guid Id)
+        {
+            // 1st Method
+            //var tag = _bloggerDbContext.Tags.Where(data => data.Id == Id).FirstOrDefault();
+
+            // 2nd Method
+            var tag = _bloggerDbContext.Tags.Find(Id);
+
+            //3rd Method
+            //var Tag = _bloggerDbContext.Tags.FirstOrDefault(data => data.Id == Id);
+
+            if (tag == null)
+            {
+                return NotFound();
+            }
+
+            var editTagRequest = new EditTagRequests
+            {
+                Id = tag.Id,
+                Name = tag.Name,
+                DisplayName = tag.DisplayName
+            };
+
+            //return View(tag);
+            return View(editTagRequest);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditTagRequests request)
+        {
+            var tag = new Tag
+            {
+                Id = request.Id,
+                Name = request.Name.Replace(" ", "-"),
+                DisplayName = request.DisplayName
+            };
+
+            var existingTag = _bloggerDbContext.Tags.Find(request.Id);
+            if (existingTag == null)
+            {
+                _bloggerDbContext.Dispose();
+                return RedirectToAction("Edit", new { Id = request.Id});
+            }
+
+            existingTag.Name = tag.Name;
+            existingTag.DisplayName = tag.DisplayName;
+            _bloggerDbContext.SaveChanges();
+            _bloggerDbContext.Dispose();
+            return RedirectToAction("List");
+        }
     }
 }

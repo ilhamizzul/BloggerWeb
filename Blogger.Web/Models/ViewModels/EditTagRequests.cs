@@ -1,7 +1,8 @@
 ﻿namespace Blogger.Web.Models.ViewModels
 {
-    public class AddTagRequest
+    public class EditTagRequests
     {
+        public Guid Id { get; set; }
         public required string Name { get; set; }
         public required string DisplayName { get; set; }
     }
