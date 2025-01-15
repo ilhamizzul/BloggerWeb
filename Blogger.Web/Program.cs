@@ -1,4 +1,5 @@
 using Blogger.Web.Data;
+using Blogger.Web.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ builder.Services.AddDbContext<BloggerDbContext>(options  =>
         builder.Configuration.GetConnectionString("BloggerDbConnectionString")
         )
     );
+
+builder.Services.AddScoped<ITagRepository, TagRepository>(); 
 
 var app = builder.Build();
 

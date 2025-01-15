@@ -1,6 +1,7 @@
 ﻿using Blogger.Web.Data;
 using Blogger.Web.Models.Domain;
 using Blogger.Web.Models.ViewModels;
+using Blogger.Web.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,10 +9,11 @@ namespace Blogger.Web.Controllers
 {
     public class AdminTagsController : Controller
     {
-        private readonly BloggerDbContext _bloggerDbContext;
-        public AdminTagsController(BloggerDbContext bloggerDbContext)
+        private readonly ITagRepository tagRepository;
+
+        public AdminTagsController(ITagRepository tagRepository)
         {
-            _bloggerDbContext = bloggerDbContext;
+            this.tagRepository = tagRepository;
         }
 
         [HttpGet]
@@ -29,8 +31,7 @@ namespace Blogger.Web.Controllers
                 DisplayName = request.DisplayName
             };
 
-            await _bloggerDbContext.Tags.AddAsync(tag);
-            await _bloggerDbContext.SaveChangesAsync();
+            await tagRepository.AddTagAsync(tag);
             
             return RedirectToAction("List");
         }
@@ -38,7 +39,7 @@ namespace Blogger.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            var tags = await _bloggerDbContext.Tags.ToListAsync();
+            var tags = await tagRepository.GetAllTagsAsync();
 
             return View(tags);
         }
@@ -46,18 +47,12 @@ namespace Blogger.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid Id)
         {
-            // 1st Method
-            //var tag = _bloggerDbContext.Tags.Where(data => data.Id == Id).FirstOrDefault();
 
-            // 2nd Method
-            var tag = await _bloggerDbContext.Tags.FindAsync(Id);
-
-            //3rd Method
-            //var Tag = _bloggerDbContext.Tags.FirstOrDefault(data => data.Id == Id);
+            var tag = await tagRepository.GetTagAsync(Id);
 
             if (tag == null)
             {
-                return NotFound();
+                return RedirectToAction("List");
             }
 
             var editTagRequest = new EditTagRequests
@@ -81,30 +76,25 @@ namespace Blogger.Web.Controllers
                 DisplayName = request.DisplayName
             };
 
-            var existingTag = await _bloggerDbContext.Tags.FindAsync(request.Id);
-            if (existingTag == null)
-            {
-                
-                return RedirectToAction("Edit", new { Id = request.Id });
-            }
+            var updatedTag = await tagRepository.UpdateTagAsync(tag);
 
-            existingTag.Name = tag.Name;
-            existingTag.DisplayName = tag.DisplayName;
-            await _bloggerDbContext.SaveChangesAsync();    
+            if (updatedTag != null)
+            {
+                return RedirectToAction("List"); 
+            }
+            //Show error notification
+            return RedirectToAction("Edit", new { Id = request.Id });
             
-            return RedirectToAction("List");
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(EditTagRequests request)
         {
-            var tag = await _bloggerDbContext.Tags.FindAsync(request.Id);
-            if (tag == null)
+            var deletedTag = await tagRepository.DeleteTagAsync(request.Id);
+            if (deletedTag == null)
             {
                 return RedirectToAction("Edit", new { Id = request.Id });
             }
-            _bloggerDbContext.Tags.Remove(tag);
-            await _bloggerDbContext.SaveChangesAsync();
             
             return RedirectToAction("List");
         }
