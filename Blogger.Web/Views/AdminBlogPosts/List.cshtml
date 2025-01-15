@@ -1,0 +1,46 @@
+﻿@model List<Blogger.Web.Models.Domain.BlogPost>
+@{
+}
+
+<div class="bg-light py-2">
+    <div class="container">
+        <h1>Show All Blog Posts - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Blog Title</th>
+                <th>Heading</th>
+                <th>Author</th>
+                <th>Published Date</th>
+                <th>Tags</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.PageTitle</td>
+                    <td>@item.Heading</td>
+                    <td>@item.Author</td>
+                    <td>@item.PublishedDate.ToShortDateString()</td>
+                    <td>
+                        @* <div class="d-flex"> *@
+                            @foreach (var tag in item.Tags)
+                            {
+                                <span class="badge badge-primary me-1">@tag.DisplayName</span>
+                            }
+                        @* </div> *@
+                    </td>
+                    <td>
+                        <a asp-area="" asp-controller="AdminBlogPosts" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
