@@ -20,11 +20,6 @@ namespace Blogger.Web.Repositories
             return blogPost;
         }
 
-        public Task<BlogPost> AddBlogAsync(BlogPost blogPost)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<BlogPost?> DeleteAsync(Guid Id)
         {
             throw new NotImplementedException();
@@ -35,9 +30,16 @@ namespace Blogger.Web.Repositories
             return await bloggerDbContext.BlogPosts.Include(x => x.Tags).ToListAsync();
         }
 
-        public Task<BlogPost> GetAsync(Guid Id)
+        public async Task<BlogPost?> GetAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            var post =  await bloggerDbContext.BlogPosts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == Id);
+            
+            if (post == null)
+            {
+                return null;
+            }
+
+            return post;
         }
 
         public Task<BlogPost?> UpdateAsync(BlogPost blogPost)

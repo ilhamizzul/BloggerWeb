@@ -61,14 +61,47 @@ namespace Blogger.Web.Controllers
             blogPost.Tags = selectedTags;
 
             await blogPostsRepository.AddAsync(blogPost); 
-            return RedirectToAction("Add");
+            return RedirectToAction("List");
         }
+        
         [HttpGet]
         public async Task<IActionResult> List()
         {
             var blogPosts = await blogPostsRepository.GetAllAsync();
 
             return View(blogPosts);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid Id) { 
+            var post = await blogPostsRepository.GetAsync(Id);
+            var tagsDomain = await tagRepository.GetAllTagsAsync();
+
+            if (post == null)
+            {
+                return RedirectToAction("List");
+            }
+
+            var model = new EditBlogPostsRequest
+            {
+                Id = post.Id,
+                Heading = post.Heading,
+                PageTitle = post.PageTitle,
+                Content = post.Content,
+                ShortDescription = post.ShortDescription,
+                FeaturedImageUrl = post.FeaturedImageUrl,
+                UrlHandle = post.UrlHandle,
+                PublishedDate = post.PublishedDate,
+                Author = post.Author,
+                Visible = post.Visible,
+                Tags = tagsDomain.Select(x => new SelectListItem { 
+                    Text = x.DisplayName, 
+                    Value = x.Id.ToString() 
+                }),
+                SelectedTags = post.Tags.Select(x => x.Id.ToString()).ToArray()
+            };
+
+            return View(model);
         }
     }
 }
