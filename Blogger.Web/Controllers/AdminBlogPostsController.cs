@@ -9,10 +9,12 @@ namespace Blogger.Web.Controllers
     public class AdminBlogPostsController : Controller
     {
         private readonly ITagRepository tagRepository;
+        private readonly IBlogPostsRepository blogPostsRepository;
 
-        public AdminBlogPostsController(ITagRepository tagRepository)
+        public AdminBlogPostsController(ITagRepository tagRepository, IBlogPostsRepository blogPostsRepository)
         {
             this.tagRepository = tagRepository;
+            this.blogPostsRepository = blogPostsRepository;
         }
 
         [HttpGet]
@@ -32,7 +34,7 @@ namespace Blogger.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddBlogPostRequest request)
         {
-            var blog = new BlogPost
+            var blogPost = new BlogPost
             {
                 Heading = request.Heading,
                 PageTitle = request.PageTitle,
@@ -43,10 +45,23 @@ namespace Blogger.Web.Controllers
                 PublishedDate = request.PublishedDate,
                 Author = request.Author,
                 Visible = request.Visible,
-                //Tags = request.SelectedTag
             };
+            // Map Tags from selected Tags
+            var selectedTags = new List<Tag>();
+            foreach (var tagId in request.SelectedTags)
+            {
+                var tagIdAsGuid = Guid.Parse(tagId);
+                var existingTag = await tagRepository.GetTagAsync(tagIdAsGuid);
 
-            return RedirectToAction("List", "AdminTags");
+                if (existingTag != null)
+                {
+                    selectedTags.Add(existingTag);
+                }
+            }
+            blogPost.Tags = selectedTags;
+
+            await blogPostsRepository.AddAsync(blogPost); 
+            return RedirectToAction("Add");
         }
     }
 }
