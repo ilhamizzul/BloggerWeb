@@ -60,10 +60,10 @@ namespace Blogger.Web.Controllers
             }
             blogPost.Tags = selectedTags;
 
-            await blogPostsRepository.AddAsync(blogPost); 
+            await blogPostsRepository.AddAsync(blogPost);
             return RedirectToAction("List");
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> List()
         {
@@ -73,7 +73,8 @@ namespace Blogger.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid Id) { 
+        public async Task<IActionResult> Edit(Guid Id)
+        {
             var post = await blogPostsRepository.GetAsync(Id);
             var tagsDomain = await tagRepository.GetAllTagsAsync();
 
@@ -94,14 +95,61 @@ namespace Blogger.Web.Controllers
                 PublishedDate = post.PublishedDate,
                 Author = post.Author,
                 Visible = post.Visible,
-                Tags = tagsDomain.Select(x => new SelectListItem { 
-                    Text = x.DisplayName, 
-                    Value = x.Id.ToString() 
+                Tags = tagsDomain.Select(x => new SelectListItem
+                {
+                    Text = x.DisplayName,
+                    Value = x.Id.ToString()
                 }),
                 SelectedTags = post.Tags.Select(x => x.Id.ToString()).ToArray()
             };
 
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditBlogPostsRequest request)
+        {
+            // mapping domain model
+            var post = new BlogPost
+            {
+                Id = request.Id,
+                Heading = request.Heading,
+                PageTitle = request.PageTitle,
+                Content = request.Content,
+                ShortDescription = request.ShortDescription,
+                FeaturedImageUrl = request.FeaturedImageUrl,
+                UrlHandle = request.UrlHandle,
+                PublishedDate = request.PublishedDate,
+                Author = request.Author,
+                Visible = request.Visible,
+            };
+
+            var selectedTags = new List<Tag>();
+            foreach (var tagId in request.SelectedTags)
+            {
+                if (Guid.TryParse(tagId, out var parsedTagId))
+                {
+                    var existingTag = await tagRepository.GetTagAsync(parsedTagId);
+                    if (existingTag != null)
+                    {
+                        selectedTags.Add(existingTag);
+                    }
+                }
+
+            }
+            post.Tags = selectedTags;
+
+            // submit information to repository to update
+            var updatedPost = await blogPostsRepository.UpdateAsync(post);
+
+
+            // redirect to GET
+            if (updatedPost != null)
+            {
+                return RedirectToAction("List");
+            }
+
+            return RedirectToAction("Edit", new { Id = post.Id });
         }
     }
 }

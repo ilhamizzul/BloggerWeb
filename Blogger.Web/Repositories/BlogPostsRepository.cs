@@ -42,9 +42,29 @@ namespace Blogger.Web.Repositories
             return post;
         }
 
-        public Task<BlogPost?> UpdateAsync(BlogPost blogPost)
+        public async Task<BlogPost?> UpdateAsync(BlogPost blogPost)
         {
-            throw new NotImplementedException();
+            var existingPost = await bloggerDbContext.BlogPosts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == blogPost.Id);
+
+            if (existingPost != null)
+            {
+                existingPost.Id = blogPost.Id;
+                existingPost.Heading = blogPost.Heading;
+                existingPost.PageTitle = blogPost.PageTitle;
+                existingPost.Content = blogPost.Content;
+                existingPost.ShortDescription = blogPost.ShortDescription;
+                existingPost.Author = blogPost.Author;
+                existingPost.FeaturedImageUrl = blogPost.FeaturedImageUrl;
+                existingPost.UrlHandle = blogPost.UrlHandle;
+                existingPost.PublishedDate = blogPost.PublishedDate;
+                existingPost.Visible = blogPost.Visible;
+                existingPost.Tags = blogPost.Tags;
+
+                await bloggerDbContext.SaveChangesAsync();
+                return existingPost;
+            }
+
+            return null;
         }
     }
 }
