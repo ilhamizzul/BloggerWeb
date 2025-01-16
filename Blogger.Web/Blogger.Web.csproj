@@ -7,17 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.ReportingServices.ReportViewerControl.WebForms" Version="150.1652.0" />
     <PackageReference Include="Microsoft.ReportingServices.ReportViewerControl.WinForms" Version="150.1652.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Reports\" />
+    <PackageReference Include="QuestPDF" Version="2024.12.2" />
   </ItemGroup>
 
 </Project>

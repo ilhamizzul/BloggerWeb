@@ -1,8 +1,10 @@
 ﻿using Blogger.Web.Models.Domain;
 using Blogger.Web.Models.ViewModels;
+using Blogger.Web.Reports;
 using Blogger.Web.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using QuestPDF.Fluent;
 
 namespace Blogger.Web.Controllers
 {
@@ -161,6 +163,16 @@ namespace Blogger.Web.Controllers
                 return RedirectToAction("List");
             }
             return RedirectToAction("Edit", new {Id = Id});
+        }
+
+        public async Task<ActionResult> Download()
+        {
+            var data = await blogPostsRepository.GetAllAsync();
+            var document = new ReportPDF(data, "2025-01-16");
+
+            var pdfBytes = document.GeneratePdf();
+            var date =  DateTime.Now.ToString("ddMMyy");
+            return File(pdfBytes, "application/pdf", "BlogPosts_"+date+".pdf");
         }
     }
 }

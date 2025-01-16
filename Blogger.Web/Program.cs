@@ -1,6 +1,7 @@
 using Blogger.Web.Data;
 using Blogger.Web.Repositories;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddDbContext<BloggerDbContext>(options  =>
 
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<IBlogPostsRepository, BlogPostsRepository>();
+
+QuestPDF.Settings.License = LicenseType.Community;
 
 var app = builder.Build();
 
