@@ -151,5 +151,16 @@ namespace Blogger.Web.Controllers
 
             return RedirectToAction("Edit", new { Id = post.Id });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid Id)
+        {
+            var deletedBlog = await blogPostsRepository.DeleteAsync(Id);
+            if (deletedBlog != null)
+            {
+                return RedirectToAction("List");
+            }
+            return RedirectToAction("Edit", new {Id = Id});
+        }
     }
 }
