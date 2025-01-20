@@ -5,7 +5,7 @@ using Blogger.Web.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blogger.Web.Controllers
+namespace Blogger.Web.Controllers.Admin
 {
     public class AdminTagsController : Controller
     {
@@ -32,7 +32,7 @@ namespace Blogger.Web.Controllers
             };
 
             await tagRepository.AddTagAsync(tag);
-            
+
             return RedirectToAction("List");
         }
 
@@ -80,11 +80,11 @@ namespace Blogger.Web.Controllers
 
             if (updatedTag != null)
             {
-                return RedirectToAction("List"); 
+                return RedirectToAction("List");
             }
             //Show error notification
-            return RedirectToAction("Edit", new { Id = request.Id });
-            
+            return RedirectToAction("Edit", new { request.Id });
+
         }
 
         [HttpPost]
@@ -93,9 +93,9 @@ namespace Blogger.Web.Controllers
             var deletedTag = await tagRepository.DeleteTagAsync(request.Id);
             if (deletedTag == null)
             {
-                return RedirectToAction("Edit", new { Id = request.Id });
+                return RedirectToAction("Edit", new { request.Id });
             }
-            
+
             return RedirectToAction("List");
         }
     }

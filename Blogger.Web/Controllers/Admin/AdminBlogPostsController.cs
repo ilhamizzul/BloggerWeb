@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using QuestPDF.Fluent;
 
-namespace Blogger.Web.Controllers
+namespace Blogger.Web.Controllers.Admin
 {
     public class AdminBlogPostsController : Controller
     {
@@ -151,7 +151,7 @@ namespace Blogger.Web.Controllers
                 return RedirectToAction("List");
             }
 
-            return RedirectToAction("Edit", new { Id = post.Id });
+            return RedirectToAction("Edit", new { post.Id });
         }
 
         [HttpPost]
@@ -162,7 +162,7 @@ namespace Blogger.Web.Controllers
             {
                 return RedirectToAction("List");
             }
-            return RedirectToAction("Edit", new {Id = Id});
+            return RedirectToAction("Edit", new { Id });
         }
 
         public async Task<ActionResult> Download()
@@ -171,8 +171,8 @@ namespace Blogger.Web.Controllers
             var document = new ReportPDF(data, "2025-01-16");
 
             var pdfBytes = document.GeneratePdf();
-            var date =  DateTime.Now.ToString("ddMMyy");
-            return File(pdfBytes, "application/pdf", "BlogPosts_"+date+".pdf");
+            var date = DateTime.Now.ToString("ddMMyy");
+            return File(pdfBytes, "application/pdf", "BlogPosts_" + date + ".pdf");
         }
     }
 }
