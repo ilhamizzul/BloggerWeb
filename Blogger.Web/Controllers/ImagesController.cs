@@ -27,7 +27,7 @@ namespace Blogger.Web.Controllers
                 return Problem("Something went wrong!", null, (int)HttpStatusCode.InternalServerError);
             }
 
-            return new JsonResult(new { url = imageURL });
+            return new JsonResult(new { link = imageURL });
         }
     }
 }

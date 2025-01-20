@@ -84,7 +84,9 @@
 
 @section scripts {
     <script>
-        var editor = new FroalaEditor('#content');
+        var editor = new FroalaEditor('#content', {
+            imageUploadURL: '/api/images'
+        });
 
         const featuredUploadElement = document.getElementById('featuredImageUpload')
         const featuredImageUrlElement = document.getElementById('imageUrl');
@@ -102,8 +104,8 @@
                 body: data
             }).then(response => response.json())
             .then(result => {
-                featuredImageUrlElement.value = result.url;
-                featuredImageDisplayElement.src = result.url;
+                featuredImageUrlElement.value = result.link;
+                featuredImageDisplayElement.src = result.link;
                 featuredImageDisplayElement.style.display = 'block';
             });
         }
