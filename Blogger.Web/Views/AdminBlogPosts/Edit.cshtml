@@ -32,6 +32,18 @@
                 <label class="form-label">Short Description</label>
                 <input type="text" class="form-control" id="shortDescription" asp-for="ShortDescription" />
             </div>
+
+            <div class="mb-3">
+                <label class="form-label">Featured Image Upload</label>
+                <input type="file" class="form-control" id="featuredImageUpload" />
+
+                @if(Model.FeaturedImageUrl != null) {
+                    <img src="@Model.FeaturedImageUrl" id="featuredImageDisplay" style="display:block;max-width:200px;" />
+                } else {
+                    <img src="" id="featuredImageDisplay" stryle="display:none; max-width:200px;" />
+                }
+            </div>
+
             <div class="mb-3">
                 <label class="form-label">Featured Image Url</label>
                 <input type="text" class="form-control" id="imageUrl" asp-for="FeaturedImageUrl" />
@@ -73,5 +85,29 @@
 @section scripts {
     <script>
         var editor = new FroalaEditor('#content');
+
+        const featuredUploadElement = document.getElementById('featuredImageUpload')
+        const featuredImageUrlElement = document.getElementById('imageUrl');
+        const featuredImageDisplayElement = document.getElementById('featuredImageDisplay');
+
+        const uploadFeaturedImage = async (e) => {
+            let data = new FormData();
+            data.append('file', e.target.files[0]);
+
+            return await fetch('/api/images', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*',
+                },
+                body: data
+            }).then(response => response.json())
+            .then(result => {
+                featuredImageUrlElement.value = result.url;
+                featuredImageDisplayElement.src = result.url;
+                featuredImageDisplayElement.style.display = 'block';
+            });
+        }
+
+        featuredUploadElement.addEventListener('change', uploadFeaturedImage)
     </script>
 }
