@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model List<Blogger.Web.Models.Domain.BlogPost>
+@model Blogger.Web.Models.ViewModels.HomeViewModel
 
 <div class="container col-xxl-8 px-4 py-5">
     <div class="row align-items-center g-5 py-5">
@@ -21,11 +21,25 @@
     </div>
 </div>
 
+<div class="container mb-3">
+    <div class="row justify-content-center">
+        <div class="col-6 d-flex justify-content-center">
+            @if (Model.Tags != null && Model.Tags.Any())
+            { 
+                foreach (var tag in Model.Tags)
+                {
+                    <span class="badge badge-dark me-1 mr-1">@tag.Name</span>
+                }
+            }
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <div class="row justify-content-center">
-        @if (Model != null && Model.Any())
+        @if (Model.BlogPosts != null && Model.BlogPosts.Any())
         {
-            foreach (var blog in Model)
+            foreach (var blog in Model.BlogPosts)
             {
                 <div class="col-6 d-flex">
                     <div class="mb-5 bg-light box-shadow shadow-lg rounded rounded-2 d-flex flex-column">
