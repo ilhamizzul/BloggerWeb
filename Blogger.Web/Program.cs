@@ -19,6 +19,7 @@ builder.Services.AddDbContext<BloggerDbContext>(options  =>
 
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<IBlogPostsRepository, BlogPostsRepository>();
+builder.Services.AddScoped<IImageRepository, CloudinaryImageRepository>();
 
 QuestPDF.Settings.License = LicenseType.Community;
 
