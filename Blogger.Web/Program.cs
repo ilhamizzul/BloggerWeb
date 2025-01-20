@@ -14,6 +14,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<BloggerDbContext>(options  =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("BloggerDbConnectionString")
+        //$"Server=${Environment.GetEnvironmentVariable("CONNECTION_DB_SERVER")};Database=${Environment.GetEnvironmentVariable("CONNECTION_DB_NAME")};Trusted_Connection=True;TrustServerCertificate=Yes"
         )
     );
 
