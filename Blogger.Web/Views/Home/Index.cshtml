@@ -1,8 +1,56 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model List<Blogger.Web.Models.Domain.BlogPost>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-5 py-5">
+        <div class="col-12 col-lg-6">
+            <h1 class="display-5 fw-bold lh-1 mb-3">
+                Blogger - The Dev Blog
+            </h1>
+            <p class="lead">
+                Blogger us the home to coding blogs covering a vast range of topics like HTML, CSS, Javascript, ASP.NET, C#, Angular, React, Vue, and many more. 
+                Want to read the latest dev articles? Join the Blogger app and get weekly blogs in your email.
+            </p>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <img src="https://images.pexels.com/photos/6347919/pexels-photo-6347919.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="d-block mx-lg-auto img-fluid" alt="Blogger - Dev Blogs" width="700" height="500" loading="lazy">
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var blog in Model)
+            {
+                <div class="col-6 d-flex">
+                    <div class="mb-5 bg-light box-shadow shadow-lg rounded rounded-2 d-flex flex-column">
+                        <img src="@blog.FeaturedImageUrl" class="mb-2 d-block img-fluid rounded-top rounded-2" alt="@blog.Heading" />
+                        <div class="px-2 flex-grow-1">
+                            <h4 class="mb-3">@blog.Heading</h4>
+                            <p class="mb-3">
+                                Author: @blog.Author
+                                <br />
+                                Published Date: @blog.PublishedDate.ToShortDateString()
+                            </p>
+                            <div>
+                                @foreach (var tag in blog.Tags)
+                                {
+                                    <span class="badge badge-dark me-1">@tag.DisplayName</span>
+                                }
+                            </div>
+                            <p class="mb-3">@blog.ShortDescription</p>
+                        </div>
+                        <div class="mt-auto px-2">
+                            <a href="" class="btn btn-dark mb-2 w-100 flex-">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
 </div>

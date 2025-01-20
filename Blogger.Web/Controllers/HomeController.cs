@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Blogger.Web.Models;
+using Blogger.Web.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blogger.Web.Controllers
@@ -7,15 +8,18 @@ namespace Blogger.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IBlogPostsRepository blogPosts;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IBlogPostsRepository blogPosts)
         {
             _logger = logger;
+            this.blogPosts = blogPosts;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var dataBlog = await blogPosts.GetAllAsync();
+            return View(dataBlog);
         }
 
         public IActionResult Privacy()
