@@ -7,9 +7,11 @@ namespace Blogger.Web.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        public IActionResult Index()
+        
+        [HttpPost]
+        public async Task<IActionResult> UploadAsync(IFormFile file)
         {
-            return Ok();
+            // call a repository to save the image
         }
     }
 }

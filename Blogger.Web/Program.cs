@@ -2,8 +2,11 @@ using Blogger.Web.Data;
 using Blogger.Web.Repositories;
 using Microsoft.EntityFrameworkCore;
 using QuestPDF.Infrastructure;
+using dotenv.net;
 
 var builder = WebApplication.CreateBuilder(args);
+
+DotEnv.Load();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
