@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Register";
+}
+
+@model Blogger.Web.Models.ViewModels.Auth.RegisterViewModel
+
+<div class="container mx-auto">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-6">
+            <h1 class="my-3 h3">Register</h1>
+            <form method="post">
+                <div class="mb-3">
+                    <label for="Username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="Username" name="Username" placeholder="Username" asp-for="Username">
+                </div>
+                <div class="mb-3">
+                    <label for="Email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="Email" name="Email" placeholder="Email" asp-for="Email">
+                </div>
+                <div class="mb-3">
+                    <label for="Password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="Password" name="Password" placeholder="Password" asp-for="Password">
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-dark">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
