@@ -3,6 +3,7 @@ using Blogger.Web.Repositories;
 using Microsoft.EntityFrameworkCore;
 using QuestPDF.Infrastructure;
 using dotenv.net;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,10 @@ builder.Services.AddDbContext<BloggerDbContext>(options  =>
         //$"Server=${Environment.GetEnvironmentVariable("CONNECTION_DB_SERVER")};Database=${Environment.GetEnvironmentVariable("CONNECTION_DB_NAME")};Trusted_Connection=True;TrustServerCertificate=Yes"
         )
     );
+
+builder.Services.AddDbContext<AuthDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BloggerAuthDbConnectionString")));
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>(); ;
 
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<IBlogPostsRepository, BlogPostsRepository>();
@@ -39,6 +44,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
