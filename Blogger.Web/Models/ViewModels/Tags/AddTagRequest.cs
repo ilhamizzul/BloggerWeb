@@ -1,4 +1,4 @@
-﻿namespace Blogger.Web.Models.ViewModels
+﻿namespace Blogger.Web.Models.ViewModels.Tags
 {
     public class AddTagRequest
     {

@@ -1,6 +1,6 @@
 ﻿using Blogger.Web.Data;
 using Blogger.Web.Models.Domain;
-using Blogger.Web.Models.ViewModels;
+using Blogger.Web.Models.ViewModels.Tags;
 using Blogger.Web.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

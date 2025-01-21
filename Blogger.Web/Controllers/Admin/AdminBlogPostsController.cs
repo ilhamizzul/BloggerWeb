@@ -1,5 +1,5 @@
 ﻿using Blogger.Web.Models.Domain;
-using Blogger.Web.Models.ViewModels;
+using Blogger.Web.Models.ViewModels.Blog;
 using Blogger.Web.Reports;
 using Blogger.Web.Repositories;
 using Microsoft.AspNetCore.Mvc;

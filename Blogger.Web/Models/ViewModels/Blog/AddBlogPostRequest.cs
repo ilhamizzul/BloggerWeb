@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Blogger.Web.Models.ViewModels
+namespace Blogger.Web.Models.ViewModels.Blog
 {
-    public class EditBlogPostsRequest
+    public class AddBlogPostRequest
     {
-        public Guid Id { get; set; }
         public string? Heading { get; set; }
         public string? PageTitle { get; set; }
         public string? Content { get; set; }
