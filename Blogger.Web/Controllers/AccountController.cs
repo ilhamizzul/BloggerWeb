@@ -7,13 +7,30 @@ namespace Blogger.Web.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signIn)
         {
             this.userManager = userManager;
+            this.signInManager = signIn;
         }
+        [HttpGet]
         public IActionResult Login()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel login)
+        {
+            var signInResult =  await signInManager.PasswordSignInAsync(login.Username, login.Password, false, false);
+
+            if (signInResult != null && signInResult.Succeeded)
+            {
+                // Login successful
+                return RedirectToAction("Index", "Home");
+            }
+            // Login failed
             return View();
         }
 
