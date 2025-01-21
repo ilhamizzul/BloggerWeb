@@ -13,7 +13,7 @@ namespace Blogger.Web.Migrations
 {
     [DbContext(typeof(BloggerDbContext))]
     [Migration("20250112131037_initial migration")]
-    partial class initialmigration
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
