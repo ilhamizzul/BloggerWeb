@@ -2,12 +2,14 @@
 using Blogger.Web.Models.ViewModels.Blog;
 using Blogger.Web.Reports;
 using Blogger.Web.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using QuestPDF.Fluent;
 
 namespace Blogger.Web.Controllers.Admin
 {
+    [Authorize(Roles = "Admin")]
     public class AdminBlogPostsController : Controller
     {
         private readonly ITagRepository tagRepository;
