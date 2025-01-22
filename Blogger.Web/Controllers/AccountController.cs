@@ -15,9 +15,15 @@ namespace Blogger.Web.Controllers
             this.signInManager = signIn;
         }
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl)
         {
-            return View();
+            var model = new LoginViewModel
+            {
+                ReturnUrl = returnUrl,
+                Password = "",
+                Username = ""
+            };
+            return View(model);
         }
 
         [HttpPost]
@@ -27,6 +33,11 @@ namespace Blogger.Web.Controllers
 
             if (signInResult != null && signInResult.Succeeded)
             {
+                if (!string.IsNullOrEmpty(login.ReturnUrl))
+                {
+                    return Redirect(login.ReturnUrl);
+
+                }
                 // Login successful
                 return RedirectToAction("Index", "Home");
             }
