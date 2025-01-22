@@ -2,6 +2,7 @@
 using Blogger.Web.Models.Domain;
 using Blogger.Web.Models.ViewModels.Tags;
 using Blogger.Web.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,7 @@ namespace Blogger.Web.Controllers.Admin
             this.tagRepository = tagRepository;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Add()
         {

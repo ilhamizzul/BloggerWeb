@@ -72,5 +72,12 @@ namespace Blogger.Web.Controllers
             // Show error notification
             return View();
         }
+
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }
