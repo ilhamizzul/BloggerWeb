@@ -29,17 +29,20 @@ namespace Blogger.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel login)
         {
-            var signInResult =  await signInManager.PasswordSignInAsync(login.Username, login.Password, false, false);
-
-            if (signInResult != null && signInResult.Succeeded)
+            if (ModelState.IsValid)
             {
-                if (!string.IsNullOrEmpty(login.ReturnUrl))
-                {
-                    return Redirect(login.ReturnUrl);
+                var signInResult =  await signInManager.PasswordSignInAsync(login.Username, login.Password, false, false);
 
+                if (signInResult != null && signInResult.Succeeded)
+                {
+                    if (!string.IsNullOrEmpty(login.ReturnUrl))
+                    {
+                        return Redirect(login.ReturnUrl);
+
+                    }
+                    // Login successful
+                    return RedirectToAction("Index", "Home");
                 }
-                // Login successful
-                return RedirectToAction("Index", "Home");
             }
             // Login failed
             return View();
