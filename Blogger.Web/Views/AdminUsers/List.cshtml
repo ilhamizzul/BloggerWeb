@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "List of Users";
+}
+@model Blogger.Web.Models.ViewModels.User.UserViewModel
+
+<div class="bg-light py-2">
+    <div class="container">
+        <h1>Users - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User Id</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Users != null && Model.Users.Any())
+            {
+                @foreach (var item in Model.Users)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Username</td>
+                        <td>@item.EmailAddress</td>
+                        <td>
+                            <a asp-area="" asp-controller="AdminUsers" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4">No users found!</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

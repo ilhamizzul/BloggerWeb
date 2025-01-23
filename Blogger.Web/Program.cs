@@ -37,6 +37,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<IBlogPostsRepository, BlogPostsRepository>();
 builder.Services.AddScoped<IImageRepository, CloudinaryImageRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 QuestPDF.Settings.License = LicenseType.Community;
 
