@@ -61,25 +61,28 @@ namespace Blogger.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel register)
         {
-            var identityUser = new IdentityUser
+            if (ModelState.IsValid)
             {
-                UserName = register.Username,
-                Email = register.Email
-            };
-            var identityResult = await userManager.CreateAsync(identityUser, register.Password);
-
-            if (identityResult.Succeeded)
-            {
-                // assign this user the "User" role
-                var identityRoleResult = await userManager.AddToRoleAsync(identityUser, "User");
-
-                if (identityRoleResult.Succeeded)
+                var identityUser = new IdentityUser
                 {
-                    // Show success notification
-                    return RedirectToAction("Login");
-                }
-            }
+                    UserName = register.Username,
+                    Email = register.Email
+                };
+                var identityResult = await userManager.CreateAsync(identityUser, register.Password);
 
+                if (identityResult.Succeeded)
+                {
+                    // assign this user the "User" role
+                    var identityRoleResult = await userManager.AddToRoleAsync(identityUser, "User");
+
+                    if (identityRoleResult.Succeeded)
+                    {
+                        // Show success notification
+                        return RedirectToAction("Login");
+                    }
+                }
+
+            }
             // Show error notification
             return View();
         }

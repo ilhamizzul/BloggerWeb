@@ -23,16 +23,16 @@ builder.Services.AddDbContext<AuthDbContext>(options => options.UseSqlServer(bui
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
 
-/*builder.Services.Configure<IdentityOptions>(options =>
+builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequiredLength = 8;
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-});*/
+    options.Password.RequiredLength = 6;
+    //options.Lockout.MaxFailedAccessAttempts = 5;
+    //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+});
 
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<IBlogPostsRepository, BlogPostsRepository>();

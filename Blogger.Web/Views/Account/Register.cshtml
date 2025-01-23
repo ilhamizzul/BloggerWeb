@@ -12,14 +12,17 @@
                 <div class="mb-3">
                     <label for="Username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="Username" name="Username" placeholder="Username" asp-for="Username">
+                    <span class="text-danger" asp-validation-for="Username"></span>
                 </div>
                 <div class="mb-3">
                     <label for="Email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="Email" name="Email" placeholder="Email" asp-for="Email">
+                    <span class="text-danger" asp-validation-for="Email"></span>
                 </div>
                 <div class="mb-3">
                     <label for="Password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="Password" name="Password" placeholder="Password" asp-for="Password">
+                    <span class="text-danger" asp-validation-for="Password"></span>
                 </div>
 
                 <div class="mb-3">
