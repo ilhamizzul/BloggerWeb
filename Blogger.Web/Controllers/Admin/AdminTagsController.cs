@@ -27,6 +27,11 @@ namespace Blogger.Web.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> Add(AddTagRequest request)
         {
+            ValidateAddTagRequest(request);
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             var tag = new Tag
             {
                 Name = request.Name,
@@ -99,6 +104,17 @@ namespace Blogger.Web.Controllers.Admin
             }
 
             return RedirectToAction("List");
+        }
+
+        private void ValidateAddTagRequest(AddTagRequest request)
+        {
+            if (request.Name is not null && request.DisplayName is not null)
+            {
+                if (request.Name == request.DisplayName)
+                {
+                    ModelState.AddModelError("DisplayName", "Name cannot be the same as DisplayName");
+                }
+            }
         }
     }
 }
