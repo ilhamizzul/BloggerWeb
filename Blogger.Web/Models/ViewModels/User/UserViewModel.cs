@@ -1,12 +1,20 @@
-﻿namespace Blogger.Web.Models.ViewModels.User
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Blogger.Web.Models.ViewModels.User
 {
     public class UserViewModel
     {
         public List<User>? Users { get; set; }
 
+        [Required]
         public string? Username { get; set; }
+        [Required]
+        [EmailAddress]
         public string? Email { get; set; }
+        [Required]
         public string? Password { get; set; }
+        [Required]
+        [Compare("Password")]
         public string? ConfirmPassword { get; set; }
         public bool AdminRoleCheckbox{ get; set; }
 

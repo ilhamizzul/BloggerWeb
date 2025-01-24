@@ -58,34 +58,42 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Create New User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                    @* <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button> *@
                 </div>
                 <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Username</label>
-                            <input type="text" name="username" class="form-control" asp-for="Username"/>
+                            <input type="text" name="username" class="form-control" required asp-for="Username"/>
+                            <span class="text-danger" asp-validation-for="Username"></span>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" asp-for="Email"/>
+                            <input type="email" name="email" class="form-control" required asp-for="Email"/>
+                            <span class="text-danger" asp-validation-for="Email"></span>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" asp-for="Password"/>
+                            <input type="password" name="password" class="form-control" required min="6" asp-for="Password"/>
+                            <span class="text-danger" asp-validation-for="Password"></span>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">ConfirmPassword</label>
-                            <input type="password" name="confirmPassword" class="form-control" asp-for="ConfirmPassword" />
+                            <input type="password" name="confirmPassword" class="form-control" required min="6" asp-for="ConfirmPassword" />
+                            <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
                         </div>
                         <div class="mb-3">
                             <div class="form-check">
                                 <input type="checkbox" id="chkUserRole" class="form-check-input" value="User" checked disabled />
                                 <label class="form-check-label" for="chkUserRole">User Role</label>
                             </div>
-                            <div class="form-check">
-                                <input type="checkbox" id="chkAdminRole" class="form-check-input" value="Admin" asp-for="AdminRoleCheckbox" />
-                                <label class="form-check-label" for="chkAdminRole">Admin Role</label>
-                            </div>
+                            @if (User.IsInRole("SuperAdmin"))
+                            {
+                            
+                                <div class="form-check">
+                                    <input type="checkbox" id="chkAdminRole" class="form-check-input" asp-for="AdminRoleCheckbox" />
+                                    <label class="form-check-label" for="chkAdminRole">Admin Role</label>
+                                </div>
+                            }
                         </div>
                 
                 </div>

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Login";
+    //ViewData["Title"] = "Login";
 }
 @model Blogger.Web.Models.ViewModels.Auth.LoginViewModel
 
@@ -24,6 +24,9 @@
                 </div>
                 <input type="hidden" value="@Model.ReturnUrl" asp-for="ReturnUrl" />
             </form>
+            <p>SuperAdmin : superadmin@blogger.com | Superadmin@123</p>
+            <p>admin : admin1 | Admin1@123</p>
+            <p>user : user1 | user1@123</p>
         </div>
     </div>
 </div>
