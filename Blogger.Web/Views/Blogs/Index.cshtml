@@ -21,11 +21,21 @@
                 <div class="mb-3">
                     @if (signInManager.IsSignedIn(User))
                     {
-                        <a id="like-button" style="cursor: pointer;">
-                            <i class="bi bi-hand-thumbs-up"></i>
-                        </a>
+                        
+                            @if (Model.Liked)
+                            {
+                                <a style="cursor: pointer;">
+                                    <i class="bi bi-hand-thumbs-up-fill"></i>
+                                </a>
+                                
+                            } else {
+                                <a id="like-button" style="cursor: pointer;">
+                                    <i class="bi bi-hand-thumbs-up"></i>
+                                </a>
+                            }
+                        
                     }
-                    <span class="fw-bold">@Model.TotalLikes</span> Likes
+                    <span id="totalLikes" class="fw-bold">@Model.TotalLikes</span> Likes
                 </div>
                 <div class="mb-3 d-flex">
                     @foreach (var tag in Model.Tags)
@@ -49,7 +59,21 @@
 @section Scripts {
     <script>
         const buttonLikeElement = document.getElementById('like-button');
-        const fetchAPI = async () => {
+        const totalLikeElement = document.getElementById('totalLikes');
+
+        const getTotalLikes = async () => {
+            fetch(`/api/BlogPostLike/@Model.Id/totalLikes`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'forEach': '*/*'
+                }
+            })
+            .then(response => response.json())
+            .then(result => totalLikeElement.innerHTML = result)
+        }
+
+        const fetchAPIAddLike = async () => {
             fetch(`/api/BlogPostLike/Add`, 
                 {
                     method: 'POST',
@@ -61,8 +85,13 @@
                         UserId: '@userManager.GetUserId(User)'
                     })
                 }
-            ).then(buttonLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>')
+            ).then(() => {
+                buttonLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>'
+                buttonLikeElement.removeEventListener('click', fetchAPIAddLike);
+                getTotalLikes();
+            })
         }
-        buttonLikeElement.addEventListener('click', fetchAPI);
+
+        buttonLikeElement.addEventListener('click', fetchAPIAddLike);
     </script>
 }
