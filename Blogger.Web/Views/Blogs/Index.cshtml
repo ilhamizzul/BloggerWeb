@@ -1,4 +1,7 @@
-﻿@model Blogger.Web.Models.ViewModels.Blog.BlogDetailsViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager
+@inject UserManager<IdentityUser> userManager
+@model Blogger.Web.Models.ViewModels.Blog.BlogDetailsViewModel
 @{
     ViewData["Title"] = Model.PageTitle;
 }
@@ -16,6 +19,12 @@
                 </div>
 
                 <div class="mb-3">
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <a id="like-button" style="cursor: pointer;">
+                            <i class="bi bi-hand-thumbs-up"></i>
+                        </a>
+                    }
                     <span class="fw-bold">@Model.TotalLikes</span> Likes
                 </div>
                 <div class="mb-3 d-flex">
@@ -36,3 +45,24 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        const buttonLikeElement = document.getElementById('like-button');
+        const fetchAPI = async () => {
+            fetch(`/api/BlogPostLike/Add`, 
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        BlogPostId: '@Model.Id',
+                        UserId: '@userManager.GetUserId(User)'
+                    })
+                }
+            ).then(buttonLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>')
+        }
+        buttonLikeElement.addEventListener('click', fetchAPI);
+    </script>
+}
