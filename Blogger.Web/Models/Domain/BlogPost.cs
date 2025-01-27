@@ -15,5 +15,6 @@ namespace Blogger.Web.Models.Domain
         public bool Visible { get; set; }
         public ICollection<Tag>? Tags { get; set; }
         public ICollection<BlogPostLike>? Likes { get; set; }
+        public ICollection<BlogPostComment> Comments { get; set; }
     }
 }
