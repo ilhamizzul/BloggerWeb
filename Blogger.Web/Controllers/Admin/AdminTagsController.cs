@@ -44,11 +44,13 @@ namespace Blogger.Web.Controllers.Admin
         }
 
         [HttpGet]
-        public async Task<IActionResult> List(string? searchQuery)
+        public async Task<IActionResult> List(string? searchQuery, string? sortBy, string? sortDirection)
         {
             ViewBag.searchQuery = searchQuery;
+            ViewBag.sortBy = sortBy;
+            ViewBag.sortDirection = sortDirection;
 
-            var tags = await tagRepository.GetAllTagsAsync(searchQuery);
+            var tags = await tagRepository.GetAllTagsAsync(searchQuery, sortBy, sortDirection);
 
             return View(tags);
         }

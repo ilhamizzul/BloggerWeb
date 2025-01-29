@@ -34,7 +34,7 @@ namespace Blogger.Web.Repositories
 
         }
 
-        public async Task<IEnumerable<Tag>> GetAllTagsAsync(string? searchQuery)
+        public async Task<IEnumerable<Tag>> GetAllTagsAsync(string? searchQuery, string? sortBy, string? sortDirection)
         {
             var query = _bloggerDbContext.Tags.AsQueryable();
 
@@ -45,6 +45,22 @@ namespace Blogger.Web.Repositories
             }
 
             // sorting
+
+            if (!string.IsNullOrWhiteSpace(sortBy))
+            {
+                var isDesc = string.Equals(sortDirection, "Desc", StringComparison.OrdinalIgnoreCase);
+
+                if (string.Equals(sortBy, "Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    query = isDesc ? query.OrderByDescending(data => data.Name) : query.OrderBy(data => data.Name);
+                }
+
+                if (string.Equals(sortBy, "DisplayName", StringComparison.OrdinalIgnoreCase))
+                {
+                    query = isDesc ? query.OrderByDescending(data => data.DisplayName) : query.OrderBy(data => data.DisplayName);
+                }
+
+            }
 
             // pagination
 

@@ -9,7 +9,7 @@
     </div>
 </div>
 
-<form method="get" asp-controller="AdminTags" asp-action="List" asp-route-searchQuery="">
+<form method="get" asp-controller="AdminTags" asp-action="List" asp-route-searchQuery="" asp-route-sortBy="@ViewBag.sortBy" asp-route-sortDirection="@ViewBag.sortDirection">
     <div class="container mt-5">
         <div class="row">
             <div class="col col-md-3 d-flex">
@@ -30,8 +30,36 @@
             <thead>
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Display Name</th>
+                    <th scope="col">
+                        Name
+                        <span>
+                            <span>
+                                <a class="btn btn-light" asp-controller="AdminTags" asp-action="List" asp-route-sortBy="Name" asp-route-sortDirection="Asc" asp-route-searchQuery="@ViewBag.searchQuery">
+                                    <i class="bi bi-arrow-up-square"></i>
+                                </a>
+                            </span>
+                            <span>
+                                <a class="btn btn-light" asp-controller="AdminTags" asp-action="List" asp-route-sortBy="Name" asp-route-sortDirection="Desc" asp-route-searchQuery="@ViewBag.searchQuery">
+                                    <i class="bi bi-arrow-down-square"></i>
+                                </a>
+                            </span>
+                        </span>
+                    </th>
+                    <th scope="col">
+                        Display Name
+                        <span>
+                            <span>
+                                <a class="btn btn-light" asp-controller="AdminTags" asp-action="List" asp-route-sortBy="DisplayName" asp-route-sortDirection="Asc" asp-route-searchQuery="@ViewBag.searchQuery">
+                                    <i class="bi bi-arrow-up-square"></i>
+                                </a>
+                            </span>
+                            <span>
+                                <a class="btn btn-light" asp-controller="AdminTags" asp-action="List" asp-route-sortBy="DisplayName" asp-route-sortDirection="Desc" asp-route-searchQuery="@ViewBag.searchQuery">
+                                    <i class="bi bi-arrow-down-square"></i>
+                                </a>
+                            </span>
+                        </span>
+                    </th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
