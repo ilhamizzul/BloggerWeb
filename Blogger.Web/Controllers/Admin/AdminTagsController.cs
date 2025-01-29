@@ -44,9 +44,11 @@ namespace Blogger.Web.Controllers.Admin
         }
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(string? searchQuery)
         {
-            var tags = await tagRepository.GetAllTagsAsync();
+            ViewBag.searchQuery = searchQuery;
+
+            var tags = await tagRepository.GetAllTagsAsync(searchQuery);
 
             return View(tags);
         }

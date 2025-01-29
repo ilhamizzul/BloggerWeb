@@ -34,10 +34,21 @@ namespace Blogger.Web.Repositories
 
         }
 
-        public async Task<IEnumerable<Tag>> GetAllTagsAsync()
+        public async Task<IEnumerable<Tag>> GetAllTagsAsync(string? searchQuery)
         {
-            var tags = await _bloggerDbContext.Tags.ToListAsync();
-            return tags;
+            var query = _bloggerDbContext.Tags.AsQueryable();
+
+            // filtering
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                query = query.Where(data => data.Name.Contains(searchQuery) || data.DisplayName.Contains(searchQuery));
+            }
+
+            // sorting
+
+            // pagination
+
+            return await query.ToListAsync();
         }
 
         public async Task<Tag?> GetTagAsync(Guid Id)
