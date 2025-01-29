@@ -21,6 +21,21 @@ namespace Blogger.Web.Repositories
             return Tag;
         }
 
+        public async Task<int> CountAsync(string? searchQuery)
+        {
+
+            var query = _bloggerDbContext.Tags.AsQueryable();
+
+            // filtering
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                query = query.Where(data => data.Name.Contains(searchQuery) || data.DisplayName.Contains(searchQuery));
+            }
+
+
+            return await query.CountAsync();
+        }
+
         public async Task<Tag?> DeleteTagAsync(Guid Id)
         {
             var tag = await _bloggerDbContext.Tags.FindAsync(Id);
@@ -34,7 +49,7 @@ namespace Blogger.Web.Repositories
 
         }
 
-        public async Task<IEnumerable<Tag>> GetAllTagsAsync(string? searchQuery, string? sortBy, string? sortDirection)
+        public async Task<IEnumerable<Tag>> GetAllTagsAsync(string? searchQuery, string? sortBy, string? sortDirection, int pageSize, int pageNumber)
         {
             var query = _bloggerDbContext.Tags.AsQueryable();
 
@@ -63,6 +78,8 @@ namespace Blogger.Web.Repositories
             }
 
             // pagination
+            query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
 
             return await query.ToListAsync();
         }

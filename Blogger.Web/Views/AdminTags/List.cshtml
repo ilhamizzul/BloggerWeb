@@ -1,6 +1,8 @@
 ﻿@model List<Blogger.Web.Models.Domain.Tag>
 @{
     ViewData["Title"] = "List of Tags";
+    int nextPage = Convert.ToInt32(ViewBag.pageNumber) + 1;
+    int prevPage = Convert.ToInt32(ViewBag.pageNumber) - 1;
 }
 
 <div class="bg-light py-2">
@@ -9,7 +11,10 @@
     </div>
 </div>
 
-<form method="get" asp-controller="AdminTags" asp-action="List" asp-route-searchQuery="" asp-route-sortBy="@ViewBag.sortBy" asp-route-sortDirection="@ViewBag.sortDirection">
+<form method="get" asp-controller="AdminTags" asp-action="List" 
+    asp-route-searchQuery="" asp-route-sortBy="@ViewBag.sortBy" 
+    asp-route-sortDirection="@ViewBag.sortDirection" asp-route-pageSize="@ViewBag.pageSize"
+>
     <div class="container mt-5">
         <div class="row">
             <div class="col col-md-3 d-flex">
@@ -78,6 +83,39 @@
                 }
             </tbody>
         </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-controller="AdminTags" asp-action="List"
+                       asp-route-pageNumber="@prevPage" asp-route-pageSize="@ViewBag.pageSize"
+                       asp-route-sortBy="@ViewBag.sortBy" asp-route-sortDirection="@ViewBag.sortDirection"
+                       asp-route-searchQuery="@ViewBag.searchQuery">
+                        Previous
+                    </a>
+                </li>
+                @for (int i = 1; i <= ViewBag.totalPages; i++)
+                {
+                    <li class="page-item">
+                        <a class="page-link" 
+                            asp-controller="AdminTags" asp-action="List" 
+                            asp-route-pageNumber="@i" asp-route-pageSize="@ViewBag.pageSize"
+                            asp-route-sortBy="@ViewBag.sortBy" asp-route-sortDirection="@ViewBag.sortDirection"
+                           asp-route-searchQuery="@ViewBag.searchQuery">@i</a>
+                    </li>
+                }
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-controller="AdminTags" asp-action="List"
+                       asp-route-pageNumber="@nextPage" asp-route-pageSize="@ViewBag.pageSize"
+                       asp-route-sortBy="@ViewBag.sortBy" asp-route-sortDirection="@ViewBag.sortDirection"
+                       asp-route-searchQuery="@ViewBag.searchQuery">
+                        Next
+                    </a>
+                </li>
+            </ul>
+        </nav>
     } else {
         <p>No tags found!</p>
     }

@@ -44,13 +44,30 @@ namespace Blogger.Web.Controllers.Admin
         }
 
         [HttpGet]
-        public async Task<IActionResult> List(string? searchQuery, string? sortBy, string? sortDirection)
+        public async Task<IActionResult> List(string? searchQuery, string? sortBy, string? sortDirection, int pageSize = 2, int pageNumber = 1)
         {
+            var totalRecords = await tagRepository.CountAsync(searchQuery);
+            var totalPages = Math.Ceiling(totalRecords / (double)pageSize);
+
+            if (pageNumber > totalPages)
+            {
+                pageNumber--;
+            }
+
+            if (pageNumber < 1)
+            {
+                pageNumber++;
+            }
+
+
             ViewBag.searchQuery = searchQuery;
             ViewBag.sortBy = sortBy;
             ViewBag.sortDirection = sortDirection;
+            ViewBag.totalPages = totalPages;
+            ViewBag.pageSize = pageSize;
+            ViewBag.pageNumber = pageNumber;
 
-            var tags = await tagRepository.GetAllTagsAsync(searchQuery, sortBy, sortDirection);
+            var tags = await tagRepository.GetAllTagsAsync(searchQuery, sortBy, sortDirection, pageSize, pageNumber);
 
             return View(tags);
         }
