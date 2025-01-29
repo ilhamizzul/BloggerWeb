@@ -68,7 +68,25 @@
                         }
                     </div>
                     <div class="card-body">
-                        
+                        @if (Model.Comments != null && Model.Comments.Any())
+                        {
+                            @foreach (var comment in Model.Comments)
+                            {    
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div>
+                                            <span class="fw-bolder">@comment.Username</span>
+                                            <span class="text-secondary">@comment.DateAdded.ToShortDateString()</span>
+                                        </div>
+                                        <div>
+                                            @comment.Description
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        } else {
+                            <span class="fw-bolder text-center text-black">There Are No Comment Yet!</span>
+                        }
                     </div>
                 </div>
                 @* <div class="mb-3">

@@ -1,5 +1,6 @@
 ﻿using Blogger.Web.Data;
 using Blogger.Web.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blogger.Web.Repositories
 {
@@ -11,11 +12,18 @@ namespace Blogger.Web.Repositories
         {
             this.bloggerDb = bloggerDb;
         }
+
         public async Task<BlogPostComment> AddAsync(BlogPostComment blogPostComment)
         {
             await bloggerDb.BlogPostComment.AddAsync(blogPostComment);
             await bloggerDb.SaveChangesAsync();
             return blogPostComment;
+        }
+
+        public async Task<IEnumerable<BlogPostComment>> CommentsByBlogIdAsync(Guid blogPostId)
+        {
+            return await bloggerDb.BlogPostComment.Where(c => c.BlogPostId == blogPostId)
+                .ToListAsync();
         }
     }
 }

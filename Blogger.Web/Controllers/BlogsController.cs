@@ -45,6 +45,21 @@ namespace Blogger.Web.Controllers
                 }
             }
 
+            //get all comments for this blog
+            var blogComments = await blogPostComment.CommentsByBlogIdAsync(blogData.Id);
+
+            var blogCommentsforView = new List<BlogComment>();
+
+            foreach (var comment in blogComments)
+            {
+                blogCommentsforView.Add(new BlogComment
+                {
+                    Description = comment.Description,
+                    DateAdded = comment.DateAdded,
+                    Username = (await userManager.FindByIdAsync(comment.UserId.ToString()))?.UserName
+                });
+            }
+
 
             var blogDetailsViewModel = new BlogDetailsViewModel
             {
@@ -60,7 +75,8 @@ namespace Blogger.Web.Controllers
                 Visible = blogData.Visible,
                 Tags = blogData.Tags,
                 TotalLikes = await blogPostLike.GetTotalLikes(blogData.Id),
-                Liked = liked
+                Liked = liked,
+                Comments = blogCommentsforView
             };
 
             return View(blogDetailsViewModel);
@@ -81,7 +97,7 @@ namespace Blogger.Web.Controllers
 
                 await blogPostComment.AddAsync(domainModel);
 
-                return RedirectToAction("Index", "Home", 
+                return RedirectToAction("Index", "Blogs", 
                     new { urlHandle = blogDetails.UrlHandle });
             }
 

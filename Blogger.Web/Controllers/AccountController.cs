@@ -45,7 +45,7 @@ namespace Blogger.Web.Controllers
                 }
             }
             // Login failed
-            return View();
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]
