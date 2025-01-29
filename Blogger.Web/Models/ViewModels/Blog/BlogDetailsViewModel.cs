@@ -1,4 +1,5 @@
 ﻿using Blogger.Web.Models.Domain;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Blogger.Web.Models.ViewModels.Blog
 {
@@ -17,5 +18,6 @@ namespace Blogger.Web.Models.ViewModels.Blog
         public ICollection<Tag> Tags { get; set; }
         public int TotalLikes { get; set; }
         public bool Liked { get; set; }
+        public string CommentDescription { get; set; }
     }
 }

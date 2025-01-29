@@ -1,5 +1,7 @@
-﻿using Blogger.Web.Models.ViewModels.Blog;
+﻿using Blogger.Web.Models.Domain;
+using Blogger.Web.Models.ViewModels.Blog;
 using Blogger.Web.Repositories;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,15 +11,18 @@ namespace Blogger.Web.Controllers
     {
         private readonly IBlogPostsRepository blog;
         private readonly IBlogPostLikeRepository blogPostLike;
+        private readonly IBlogPostCommentRepository blogPostComment;
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly UserManager<IdentityUser> userManager;
 
         public BlogsController(
-            IBlogPostsRepository blog, IBlogPostLikeRepository blogPostLike, 
+            IBlogPostsRepository blog, IBlogPostLikeRepository blogPostLike,
+            IBlogPostCommentRepository blogPostComment,
             SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
             this.blog = blog;
             this.blogPostLike = blogPostLike;
+            this.blogPostComment = blogPostComment;
             this.signInManager = signInManager;
             this.userManager = userManager;
         }
@@ -60,5 +65,28 @@ namespace Blogger.Web.Controllers
 
             return View(blogDetailsViewModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(BlogDetailsViewModel blogDetails)
+        {
+            if (signInManager.IsSignedIn(User))
+            {
+                var domainModel = new BlogPostComment
+                {
+                    BlogPostId = blogDetails.Id,
+                    Description = blogDetails.CommentDescription,
+                    UserId = Guid.Parse(userManager.GetUserId(User)),
+                    DateAdded = DateTime.Now
+                };
+
+                await blogPostComment.AddAsync(domainModel);
+
+                return RedirectToAction("Index", "Home", 
+                    new { urlHandle = blogDetails.UrlHandle });
+            }
+
+            return View();
+
+        } 
     }
 }

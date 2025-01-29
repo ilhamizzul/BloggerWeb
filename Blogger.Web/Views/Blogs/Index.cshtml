@@ -47,6 +47,54 @@
                 <div class="mb-3 blog-details-content">
                     @Html.Raw(Model.Content)
                 </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Comments</h5>
+
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <form method="post">
+                                <div class="mb-3">
+                                    <label for="comment" class="form-label">Comment Description</label>
+                                    <input type="text" class="form-control" asp-for="CommentDescription" />
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-dark">Submit</button>
+                                    <input type="hidden" asp-for="Id" value="@Model.Id" />
+                                    <input type="hidden" asp-for="UrlHandle" />
+                                </div>
+                            </form>
+                        }
+                    </div>
+                    <div class="card-body">
+                        
+                    </div>
+                </div>
+                @* <div class="mb-3">
+                    <h3>Comments</h3>
+                    <form method="post" action="/api/BlogPostComment/Add">
+                        <input type="hidden" name="BlogPostId" value="@Model.Id" />
+                        <input type="hidden" name="UserId" value="@userManager.GetUserId(User)" />
+                        <div class="mb-3">
+                            <textarea name="Content" class="form-control" rows="3" placeholder="Write your comment here"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                    <div class="mt-3">
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="fw-bold">@comment.UserDisplayName</span>
+                                        <span class="text-secondary">@comment.CreatedDate.ToShortDateString()</span>
+                                    </div>
+                                    <p class="mt-2">@comment.Content</p>
+                                </div>
+                            </div>
+                        }
+                </div> *@
             } else {
                 <div class="alert alert-danger" role="alert">
                     Blog not found!
